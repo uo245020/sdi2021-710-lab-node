@@ -1,6 +1,8 @@
 // Módulos
 let express = require('express');
 let app = express();
+
+app.use(express.static('public'));
 // Variables
 app.set('port', 8081);
 
@@ -15,3 +17,5 @@ app.listen(app.get('port'), function() {
 app.listen(8081, function(){
     console.log("Servidor activo");
 });
+
+
