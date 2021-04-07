@@ -2,6 +2,8 @@
 let express = require('express');
 let app = express();
 
+let fileUpload = require('express-fileupload');
+app.use(fileUpload());
 let mongo = require('mongodb');
 let swig = require('swig');
 let bodyParser = require('body-parser');
@@ -10,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 let gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app,mongo);
+
 
 
 app.use(express.static('public'));
