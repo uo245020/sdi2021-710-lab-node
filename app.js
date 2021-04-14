@@ -104,6 +104,10 @@ app.get('/promo*', function (req, res) {
     res.send('Respuesta patrón promo* ');
 })
 
+app.get('/', function (req, res) {
+    res.redirect('/tienda');
+})
+
 // lanzar el servidor
 app.listen(app.get('port'), function() {
     console.log("Servidor activo");

@@ -4,7 +4,7 @@ module.exports = function(app, swig, gestorBD) {
     });
     app.get("/registrarse", function(req, res) {
         let respuesta = swig.renderFile('views/bregistro.html', {});
-        res.send(respuesta);
+        res.redirect("/identificarse");
     });
     app.get("/identificarse", function(req, res) {
         let respuesta = swig.renderFile('views/bidentificacion.html', {});
@@ -24,7 +24,7 @@ module.exports = function(app, swig, gestorBD) {
                 res.send("No identificado: ");
             } else {
                 req.session.usuario = usuarios[0].email;
-                res.send("identificado");
+                res.redirect("/publicaciones");
             }
         });
     });
