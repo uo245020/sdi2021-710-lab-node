@@ -4,7 +4,7 @@ module.exports = function(app, swig, gestorBD) {
     });
     app.get("/registrarse", function(req, res) {
         let respuesta = swig.renderFile('views/bregistro.html', {});
-        res.redirect("/identificarse");
+        res.send(respuesta);
     });
     app.get("/identificarse", function(req, res) {
         let respuesta = swig.renderFile('views/bidentificacion.html', {});
@@ -44,8 +44,8 @@ module.exports = function(app, swig, gestorBD) {
         }
         gestorBD.insertarUsuario(usuario, function (id) {
             if (id == null) {
-                res.redirect("/registrarse" +
-                    "?mensaje=Error al registrar el usuario");
+                req.body.error = usuarios[0].email;
+                res.redirect("/publicaciones");
             } else {
                 res.redirect("/identificarse" +
                     "?mensaje=Nuevo usuario registrado");

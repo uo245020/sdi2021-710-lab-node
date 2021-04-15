@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% block titulo %} Detalles {{ cancion.nombre }} {% endblock %}
 
@@ -12,14 +12,42 @@
 			  <h2>{{ cancion.nombre }}</h2>
 			  <p>{{ cancion.autor }}</p>
 			  <p>{{ cancion.genero }}</p>
+			  {% for compra in compras %}
+			  <script>
+				  let comprada = 0;
+
+				  if (usuario==cancion.autor){
+					  comprada=1;
+				  }
+				  var i;
+				  for(i=0;i<compras.length;i++){
+					  if (compras[i].cancionId!=cancion._id){
+						  comprada=1;
+					  }
+				  }
+			  </script>
+			  {% endfor %}
+			  {% if comprada == 0 %}
 			  <a class="btn btn-primary pull-right"
 				 href="/cancion/comprar/{{cancion._id.toString()}}">{{ cancion.precio
 				  }} €</a>
-			 <!-- Cambiar el precio por "reproducir" si ya está comprada -->
+
+
+			  {% endif %}
+			  {% if comprada == 1 %}
+			  audio controls>
+			  <source src="/audios/{{ cancion._id.toString() }}.mp3" type="audio/mpeg">
+			  </audio>
+			  {% endif %}
+
+
+
+
+			  <!-- Cambiar el precio por "reproducir" si ya está comprada -->
 		  </div>
 		</div>
 	  </div>
-	  
+
 	 <!-- -->
 	 <div class="row" style="margin-top: 20px;" >
 		 {% for comentario in comentarios %}

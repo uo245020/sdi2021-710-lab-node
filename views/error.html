@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titulo %} Se ha producido un error{% endblock %}
+{% block contenido_principal %}
+<div class="row">
+    <div class="media col-xs-10">
+        <div class="media-body">
+            <p>{{ error.name }}</p>
+        </div>
+    </div>
+</div>
+<!-- -->
+{% endblock %}

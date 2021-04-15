@@ -124,19 +124,23 @@ module.exports = function(app, swig, gestorBD) {
     app.get('/cancion/:id', function (req, res) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         let criterio2 = {"cancion_id": gestorBD.mongo.ObjectID(req.params.id)};
-        console.log(criterio2);
+        let criterio3 = {"usuario" : req.session.usuario} ;
 
         canciones = gestorBD.obtenerCanciones(criterio, function (canciones) {
             if (canciones == null) {
                 res.send("Error al recuperar la canción.");
             } else {
                 comentarios = gestorBD.obtenerComentarios(criterio2, function (comentarios) {
-                    let respuesta = swig.renderFile('views/bcancion.html',
-                        {
-                            cancion: canciones[0],
-                            comentarios: comentarios
-                        });
-                    res.send(respuesta);
+                    compras = gestorBD.obtenerCompras(criterio3, function (compras) {
+                        let respuesta = swig.renderFile('views/bcancion.html',
+                            {
+                                cancion : canciones[0],
+                                comentarios : comentarios,
+                                usuario : req.session.usuario,
+                                compras : compras
+                            });
+                        res.send(respuesta);
+                    });
                 });
             }
         });
@@ -148,13 +152,48 @@ module.exports = function(app, swig, gestorBD) {
             usuario : req.session.usuario,
             cancionId : cancionId
         }
-        gestorBD.insertarCompra(compra ,function(idCompra){
-            if ( idCompra == null ){
-                res.send(respuesta);
-            } else {
-                res.redirect("/compras");
+        gestorBD.obtenerCompras(criterio, function (compras) {
+            if (compras==null){
+                res.send("Error al listar");
+            }else{
+                let cancionesCompradasIds=[];
+                for (i=0;i<compras.length;i++){
+                    cancionesCompradasIds.push(compras[i].cancionId);
+                }
+                let criterio = {"_id": {$in: cancionesCompradasIds }}
+                gestorBD.obtenerCanciones(criterio, function (canciones) {
+                    let respuesta = swig.renderFile('views/bcompras.html',{
+                        canciones : canciones
+                    });
+                    res.send(respuesta);
+                });
             }
         });
+        var i;
+        var esta = 0;
+        for (i=0;i<compras.length;i++){
+            if (compras[i]._id==cancionId){
+                esta=1;
+            }
+        }
+        var j;
+        for (j=0;j<canciones.length;j++){
+            if (canciones[j]==cancionId){
+                if (canciones[j].autor==req.session.usuario){
+                    esta=1;
+                }
+            }
+        }
+
+        if (esta==0) {
+            gestorBD.insertarCompra(compra, function (idCompra) {
+                if (idCompra == null) {
+                    res.send(respuesta);
+                } else {
+                    res.redirect("/compras");
+                }
+            });
+        }
     });
 
     app.post('/cancion/modificar/:id', function (req, res) {
@@ -264,6 +303,14 @@ module.exports = function(app, swig, gestorBD) {
             }
         });
     })
+
+    app.get('/error', function (req, res) {
+        let respuesta = swig.renderFile('views/error.html',
+            {
+                error : req.query.error
+            });
+        res.send(respuesta);
+    });
 
 
 };

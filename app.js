@@ -128,21 +128,24 @@ app.get('/', function (req, res) {
 
 
 app.use( function (err, req, res, next) {
-    console.log("Error producido: " + err);
+    res.redirect("/error");
     if (! res.headersSent){
         res.status(400);
         res.send("Recurso no disponible");
     }
 
 });
-// lanzar el servidor
-https.createServer({
-    key: fs.readFileSync('certificates/alice.key'),
-    cert: fs.readFileSync('certificates/alice.crt')
-}, app).listen(app.get('port'), function() {
+app.listen(app.get('port'), function() {
     console.log("Servidor activo");
 });
 
 
 
+/*https.createServer({
+    key: fs.readFileSync('certificates/alice.key'),
+    cert: fs.readFileSync('certificates/alice.crt')
+}, app).listen(app.get('port'), function() {
+    console.log("Servidor activo");
+});
+*/
 
