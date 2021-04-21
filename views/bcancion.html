@@ -30,7 +30,7 @@
 			  {% if comprada == 0 %}
 			  <a class="btn btn-primary pull-right"
 				 href="/cancion/comprar/{{cancion._id.toString()}}">{{ cancion.precio
-				  }} €</a>
+				  }} €  - {{ cancion.usd }} $</a>
 
 
 			  {% endif %}
