@@ -110,6 +110,7 @@ app.set('crypto',crypto);
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rcanciones.js")(app, swig, gestorBD);
 require("./routes/rcomentarios.js")(app, swig, gestorBD);
+require("./routes/rapicanciones.js")(app, gestorBD);
 require("./routes/rautores.js")(app, swig);
 app.get('/usuarios', function(req, res) {
     res.send('ver usuarios');
