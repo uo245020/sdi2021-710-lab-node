@@ -188,17 +188,15 @@ app.use( function (err, req, res, next) {
     }
 
 });
-app.listen(app.get('port'), function() {
-    console.log("Servidor activo");
-});
 
 
 
-/*https.createServer({
+
+https.createServer({
     key: fs.readFileSync('certificates/alice.key'),
     cert: fs.readFileSync('certificates/alice.crt')
 }, app).listen(app.get('port'), function() {
     console.log("Servidor activo");
 });
-*/
+
 
