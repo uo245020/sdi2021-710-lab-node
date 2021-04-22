@@ -77,9 +77,24 @@
   }
   });
   }
+
+  function ordenarPorPrecio(){
+    if (precioDsc){
+      canciones.sort(function(a, b) {
+        return parseFloat(a.precio) - parseFloat(b.precio);
+      });
+    } else {
+      canciones.sort(function(a, b) {
+        return parseFloat(b.precio) - parseFloat(a.precio);
+      });
+    }
+    actualizarTabla(canciones);
+    precioDsc = !precioDsc; //invertir
+  }
+
 </script>
 }
-</script>
+
 
 </body>
 </html>
